@@ -5,12 +5,13 @@ import (
 	"crypto/rand"
 	"crypto/rsa"
 	"crypto/x509"
-	"encoding/pem"
 	"fmt"
-	"os"
 	"time"
 
 	"github.com/golang-jwt/jwt"
+	"github.com/google/uuid"
+
+	"oauth2-server/internal/model"
 )
 
 func (s *ConfigService) TokenGenerate(ctx context.Context, clientId, clientSecret string) (*string, error) {
@@ -34,9 +35,10 @@ func (s *ConfigService) TokenGenerate(ctx context.Context, clientId, clientSecre
 		return nil, fmt.Errorf("failed to generate token: error generating RSA key pair: %v\n", errKeys)
 	}
 
-	err = savePublicKeyToFile(publicKey, "public_key.pem")
+	id := uuid.New()
+	err = s.savePublicKey(credentials.Username, id, publicKey)
 	if err != nil {
-		return nil, fmt.Errorf("failed to generate token: error saving public key to file: %v\n", err)
+		return nil, fmt.Errorf("failed to generate token: error saving public key: %v", err)
 	}
 
 	// Token
@@ -66,25 +68,20 @@ func generateRSAKeyPair(bits int) (*rsa.PrivateKey, *rsa.PublicKey, error) {
 	return privateKey, publicKey, nil
 }
 
-func savePublicKeyToFile(publicKey *rsa.PublicKey, filename string) error {
+func (s *ConfigService) savePublicKey(clientId string, id uuid.UUID, publicKey *rsa.PublicKey) error {
 	publicKeyBytes, err := x509.MarshalPKIXPublicKey(publicKey)
 	if err != nil {
 		return err
 	}
 
-	pemBlock := &pem.Block{
-		Type:  "PUBLIC KEY",
-		Bytes: publicKeyBytes,
+	key := &model.Key{
+		Id:        id,
+		ClientId:  clientId,
+		PublicKey: publicKeyBytes,
+		CreatedAt: time.Now(),
 	}
 
-	file, err := os.Create(filename)
-	if err != nil {
-		return err
-	}
-	defer file.Close()
-
-	err = pem.Encode(file, pemBlock)
-	if err != nil {
+	if err = s.repoKeys.Save(key); err != nil {
 		return err
 	}
 
