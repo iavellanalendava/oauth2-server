@@ -3,6 +3,7 @@ package controller
 import (
 	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 
@@ -36,7 +37,7 @@ func (c *ConfigController) TokenGenerate(ctx *gin.Context) {
 		ctx.AbortWithError(http.StatusInternalServerError, err)
 	}
 
-	response := buildTokenResponse(signedToken, string(c.configuration.App.Token.Expiration))
+	response := buildTokenResponse(signedToken, strconv.Itoa(c.configuration.App.Token.Expiration))
 	ctx.JSON(http.StatusOK, response)
 }
 

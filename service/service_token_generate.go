@@ -13,8 +13,6 @@ import (
 	"github.com/golang-jwt/jwt"
 )
 
-const tokenExpiration = time.Hour
-
 func (s *ConfigService) TokenGenerate(ctx context.Context, clientId, clientSecret string) (*string, error) {
 	// Authentication
 	credentials, err := s.repoCred.GetCredentials(ctx, clientId)
