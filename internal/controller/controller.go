@@ -5,6 +5,7 @@ import (
 	"go.uber.org/zap"
 
 	"oauth2-server/config"
+	"oauth2-server/internal/controller/middleware"
 	"oauth2-server/internal/controller/paths"
 	"oauth2-server/service"
 )
@@ -27,7 +28,7 @@ func NewConfigController(s service.ConfigServiceInterface, c *config.Config, e *
 }
 
 func (c *ConfigController) setUpRoutes() {
-	c.engine.POST(paths.TokenGenerate, c.TokenGenerate)
+	c.engine.POST(paths.TokenGenerate, middleware.ValidateRequest(), c.TokenGenerate)
 	c.engine.POST(paths.TokenVerify, c.TokenVerify)
 	c.engine.GET(paths.KeysList, c.KeysList)
 }

@@ -1,12 +1,16 @@
 package model
 
-import "time"
+import (
+	"time"
 
-type KeyPair struct {
-	ID         int
-	PublicKey  []byte
-	PrivateKey []byte
-	CreatedAt  time.Time
+	"github.com/google/uuid"
+)
+
+type Key struct {
+	Id        uuid.UUID
+	ClientId  string
+	PublicKey []byte
+	CreatedAt time.Time
 
 	// Additional fields can be added as needed
 }

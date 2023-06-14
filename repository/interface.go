@@ -3,6 +3,8 @@ package repository
 import (
 	"context"
 
+	"github.com/google/uuid"
+
 	"oauth2-server/internal/model"
 )
 
@@ -13,11 +15,11 @@ type CredentialsStoreInterface interface {
 
 type KeyStoreInterface interface {
 	// Save saves a key pair of public and private keys
-	Save(keyPair *model.KeyPair) error
+	Save(key *model.Key) error
 
 	// GetById gets the key pair of public and private keys for a specific user
-	GetById(id int) (*model.KeyPair, error)
+	GetById(id uuid.UUID) (*model.Key, bool)
 
 	// GetAll gets all the key pairs of public and private keys
-	GetAll() ([]*model.KeyPair, error)
+	GetAll() []*model.Key
 }

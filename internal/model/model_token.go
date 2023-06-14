@@ -12,5 +12,6 @@ type TokenVerificationRequest struct {
 }
 
 type TokenVerificationResponse struct {
-	Status string `json:"status"`
+	Token *string `json:"token"`
+	Valid bool    `json:"valid"`
 }

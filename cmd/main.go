@@ -35,19 +35,8 @@ func main() {
 	engine.Use(middleware.ResponseLogger(logger))
 
 	// Repository
-	repCred := repository.NewCredentialsStore(engine, logger)
-
-	db, errDb := database()
-	if errDb != nil {
-		panic(fmt.Errorf("failed to load database, error: %v", errDb))
-	}
-	db.Close()
-	err = databaseTable(db)
-	if err != nil {
-		panic(fmt.Errorf("failed to load database, error: %v", err))
-	}
-
-	repKeys := repository.NewKeysStore(engine, db, logger)
+	repCred := repository.NewCredentialsStore(logger)
+	repKeys := repository.NewKeysStore(logger)
 
 	// Service
 	srv := service.NewConfigService(cfg, repCred, repKeys, logger)
