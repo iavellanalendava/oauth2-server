@@ -9,7 +9,7 @@ import (
 
 type ConfigService struct {
 	config   *config.Config
-	repoCred repository.CredentialsStore
+	repoCred repository.CredentialsStoreInterface
 	repoKeys repository.KeysStore
 	logger   *zap.Logger
 }

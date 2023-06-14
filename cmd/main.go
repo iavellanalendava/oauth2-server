@@ -41,6 +41,7 @@ func main() {
 	if errDb != nil {
 		panic(fmt.Errorf("failed to load database, error: %v", errDb))
 	}
+	db.Close()
 	err = databaseTable(db)
 	if err != nil {
 		panic(fmt.Errorf("failed to load database, error: %v", err))
