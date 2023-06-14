@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"database/sql"
 	"fmt"
 
 	"github.com/gin-gonic/gin"
@@ -47,28 +46,4 @@ func main() {
 	if err := engine.Run(); err != nil {
 		panic(fmt.Errorf("failed to start gin engine, error: %v", err))
 	}
-}
-
-// database connects to a PostgresSQL database
-func database() (*sql.DB, error) {
-	db, err := sql.Open(
-		"postgres",
-		"host=localhost port=5432 user=myuser password=mypassword dbname=mydb sslmode=disable")
-	if err != nil {
-		return nil, err
-	}
-	return db, nil
-}
-
-// databaseTable creates the table to store the key pairs (if it doesn't exist)
-func databaseTable(db *sql.DB) error {
-	_, err := db.Exec(`CREATE TABLE IF NOT EXISTS key_pairs (
-		id SERIAL PRIMARY KEY,
-		public_key BYTEA NOT NULL,
-		private_key BYTEA NOT NULL
-	)`)
-	if err != nil {
-		return err
-	}
-	return nil
 }
