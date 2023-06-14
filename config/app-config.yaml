@@ -5,4 +5,4 @@ app:
   server:
     port: 8080
   token:
-    expiration: 7200 #Example: 2 hours expiration
+    expiration: 7200 #Example: 2 hours expiration expressed in seconds
