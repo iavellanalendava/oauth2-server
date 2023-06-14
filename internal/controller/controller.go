@@ -30,5 +30,5 @@ func NewConfigController(s service.ConfigServiceInterface, c *config.Config, e *
 func (c *ConfigController) setUpRoutes() {
 	c.engine.POST(paths.TokenGenerate, middleware.ValidateRequest(), c.TokenGenerate)
 	c.engine.POST(paths.TokenVerify, c.TokenVerify)
-	c.engine.GET(paths.KeysList, middleware.ValidateRequest(), c.KeysList)
+	c.engine.POST(paths.KeysList, middleware.ValidateRequest(), c.KeysList)
 }
