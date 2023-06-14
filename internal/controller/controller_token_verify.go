@@ -22,19 +22,17 @@ func (c *ConfigController) TokenVerify(ctx *gin.Context) {
 		return
 	}
 
-	token, err := c.service.TokenVerify(ctx, *tokenRequest.Token)
-	if token == nil {
-		ctx.AbortWithError(http.StatusInternalServerError, fmt.Errorf("failed to verify token: unexpected error"))
-		return
-	}
+	tokenData, err := c.service.TokenVerify(ctx, *tokenRequest.Token)
 	if err != nil {
 		ctx.AbortWithError(http.StatusInternalServerError, fmt.Errorf("invalid token: %v", err))
 		return
 	}
 
 	tokenResponse := model.TokenVerificationResponse{
-		Token: tokenRequest.Token,
-		Valid: token.Valid,
+		AccessToken: *tokenRequest.Token,
+		ClientId:    tokenData.Client,
+		Scope:       tokenData.Scope,
+		ExpiresIn:   tokenData.ExpiresIn,
 	}
 
 	ctx.JSON(http.StatusOK, tokenResponse)

@@ -1,5 +1,7 @@
 package model
 
+import "github.com/golang-jwt/jwt"
+
 type TokenResponse struct {
 	AccessToken string `json:"access_token"`
 	TokenType   string `json:"token_type"`
@@ -12,6 +14,16 @@ type TokenVerificationRequest struct {
 }
 
 type TokenVerificationResponse struct {
-	Token *string `json:"token"`
-	Valid bool    `json:"valid"`
+	AccessToken string `json:"access_token"`
+	ClientId    string `json:"client_id"`
+	Scope       string `json:"scope"`
+	ExpiresIn   string `json:"expires_in"`
+}
+
+type TokenVerification struct {
+	Token     *jwt.Token
+	Valid     bool   `json:"valid"`
+	Client    string `json:"client_id"`
+	Scope     string `json:"scope"`
+	ExpiresIn string `json:"expires_in"`
 }

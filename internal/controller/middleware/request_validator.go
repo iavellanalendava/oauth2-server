@@ -30,7 +30,6 @@ func ValidateRequest() gin.HandlerFunc {
 
 		ctx.Set("clientID", clientID)
 		ctx.Set("clientSecret", clientSecret)
-
 		ctx.Next()
 	}
 }

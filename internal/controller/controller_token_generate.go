@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"fmt"
 	"net/http"
 	"strconv"
 
@@ -12,27 +11,10 @@ import (
 )
 
 func (c *ConfigController) TokenGenerate(ctx *gin.Context) {
-	// Validation
-	if ctx.Request.Method != http.MethodPost {
-		ctx.AbortWithError(http.StatusBadRequest, fmt.Errorf("invalid request method"))
-		return
-	}
+	clientID, _ := ctx.Get("clientID")
+	clientSecret, _ := ctx.Get("clientSecret")
 
-	grantType := ctx.Query("grant_type")
-	if grantType != "client_credentials" {
-		ctx.AbortWithError(http.StatusBadRequest, fmt.Errorf("invalid grant type"))
-		return
-	}
-
-	// Client Credentials
-	clientID, clientSecret, ok := ctx.Request.BasicAuth()
-	if !ok {
-		ctx.AbortWithError(http.StatusUnauthorized, fmt.Errorf("invalid client credentials"))
-		return
-	}
-
-	// Token
-	signedToken, err := c.service.TokenGenerate(ctx, clientID, clientSecret)
+	signedToken, err := c.service.TokenGenerate(ctx, clientID.(string), clientSecret.(string))
 	if err != nil {
 		ctx.AbortWithError(http.StatusInternalServerError, err)
 	}
