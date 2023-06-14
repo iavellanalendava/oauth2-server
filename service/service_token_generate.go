@@ -76,12 +76,11 @@ func (s *ConfigService) savePublicKey(clientId string, id uuid.UUID, publicKey *
 
 	key := &model.Key{
 		Id:        id,
-		ClientId:  clientId,
 		PublicKey: publicKeyBytes,
 		CreatedAt: time.Now(),
 	}
 
-	if err = s.repoKeys.Save(key); err != nil {
+	if err = s.repoKeys.Save(clientId, key); err != nil {
 		return err
 	}
 

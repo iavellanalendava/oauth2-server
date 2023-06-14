@@ -11,10 +11,10 @@ import (
 )
 
 func (c *ConfigController) TokenGenerate(ctx *gin.Context) {
-	clientID, _ := ctx.Get("clientID")
-	clientSecret, _ := ctx.Get("clientSecret")
+	clientId, _ := ctx.Get(constants.ClientId)
+	clientSecret, _ := ctx.Get(constants.ClientSecret)
 
-	signedToken, err := c.service.TokenGenerate(ctx, clientID.(string), clientSecret.(string))
+	signedToken, err := c.service.TokenGenerate(ctx, clientId.(string), clientSecret.(string))
 	if err != nil {
 		ctx.AbortWithError(http.StatusInternalServerError, err)
 	}

@@ -8,7 +8,6 @@ import (
 
 type Key struct {
 	Id        uuid.UUID
-	ClientId  string
 	PublicKey []byte
 	CreatedAt time.Time
 

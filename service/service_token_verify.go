@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 	"fmt"
+	"strconv"
 
 	"github.com/golang-jwt/jwt"
 
@@ -30,7 +31,7 @@ func (s *ConfigService) TokenVerify(ctx context.Context, token string) (*model.T
 		Valid:     t.Valid,
 		Client:    client,
 		Scope:     scope,
-		ExpiresIn: string(expiration),
+		ExpiresIn: strconv.FormatInt(expiration, 10),
 	}
 
 	return tokenData, nil

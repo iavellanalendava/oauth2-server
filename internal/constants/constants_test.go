@@ -10,4 +10,7 @@ import (
 func TestConstants(t *testing.T) {
 	assert.Equal(t, "Bearer", Bearer)
 	assert.Equal(t, "read", Read)
+
+	assert.Equal(t, "clientId", ClientId)
+	assert.Equal(t, "clientSecret", ClientSecret)
 }
